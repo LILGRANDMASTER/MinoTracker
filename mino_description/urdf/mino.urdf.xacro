@@ -19,10 +19,29 @@
 
     <xacro:property name="base_yaml" value="$(arg config_dir)/base.yaml"/>
     <xacro:property name="base_props" value="${xacro.load_yaml(base_yaml)}"/>
+    
+    <xacro:property name="wheel_yaml" value="$(arg config_dir)/wheels.yaml"/>
+    <xacro:property name="wheel_props" value="${xacro.load_yaml(wheel_yaml)}"/>
+
+    <xacro:property name="caster_yaml" value="$(arg config_dir)/caster.yaml"/>
+    <xacro:property name="caster_props" value="${xacro.load_yaml(caster_yaml)}"/>
     <!-- ########################################## -->
 
+    <!-- Footprint link-->
+    <xacro:footprint wheel_props="${wheel_props}"/>
 
     <!-- Base link -->
     <xacro:base link_name="base_link" base_prop="${base_props}" mesh="${base_props['mesh']}"/>
+
+    <!-- Wheels links -->
+    <xacro:wheel prefix="right" reflect="-1" wheel_props="${wheel_props}" base_props="${base_props}"/>
+    <xacro:wheel prefix="left" reflect="1" wheel_props="${wheel_props}" base_props="${base_props}"/>
+
+    <!-- Caster wheel link -->
+    <xacro:caster link_name="caster_link" caster_props="${caster_props}"/>
+    
+    <!-- Sensor link -->
+
+    <!-- ros2_control -->
 </robot>
 

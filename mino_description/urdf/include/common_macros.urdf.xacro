@@ -1,18 +1,16 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+<!--           Include materials            -->
+<xacro:include filename="./materials.urdf.xacro"/>
+<!--########################################-->
+
+
+
 <!--               Base xacro               -->
 
 <xacro:macro name="base"
     params="link_name:='base_link' base_prop mesh:='' scale:=''">
-
-    <link name="footprint"/>
-
-    <joint name="footprint_to_base" type="fixed">
-        <parent link="footprint"/>
-        <child link="base_link"/>
-        <origin xyz="-0.1 0 0"/>
-    </joint>
 
     <link name="${link_name}">
 
@@ -20,10 +18,11 @@
     <xacro:if value="${mesh == ''}">
         <visual>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-
             <geometry>
                 <box size="${base_prop['x_size']} ${base_prop['y_size']} ${base_prop['z_size']}"/>
             </geometry>
+
+            <material name="blue"/>
         </visual>
     </xacro:if>
 
@@ -37,4 +36,97 @@
 </xacro:macro>
 <!--########################################-->
 
+
+<!--            Footprint xacro              -->
+<xacro:macro name="footprint"
+    params="wheel_props">
+
+    <link name="base_footprint"/>
+
+    <joint name="base_to_footprint_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="base_footprint"/>
+        <origin xyz="0.0 0.0 ${-(wheel_props['radius']) + wheel_props['z_offset']}" rpy="0.0 0.0 0.0"/>
+    </joint>
+</xacro:macro>
+<!--######################################## -->
+
+
+<!--               Wheel xacro               -->
+<xacro:macro name="wheel"
+    params="prefix reflect wheel_props base_props">
+
+<xacro:property name="pos_x_joint"
+    value="${(base_props['x_size']/2) - wheel_props['x_offset']}"/>
+
+<xacro:property name="pos_y_joint"
+    value="${(base_props['y_size']/2) + wheel_props['y_offset'] + (wheel_props['length']/2)}"/>
+
+<xacro:property name="pos_z_joint" value="${wheel_props['z_offset']}"/>
+
+    <link name="${prefix}_wheel">
+
+    <!-- if no 3d model -->
+    <xacro:if value="${wheel_props['mesh'] == ''}">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="${wheel_props['radius']}" length="${wheel_props['length']}"/>
+            </geometry>
+
+            <material name="black"/>
+        </visual>
+    </xacro:if>
+
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="${wheel_props['radius']}" length="${wheel_props['length']}"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="${prefix}_wheel_joint" type="continuous">
+        <axis xyz="0.0 1.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="${prefix}_wheel"/>
+
+        <origin xyz="${pos_x_joint} ${reflect * pos_y_joint} ${pos_z_joint}" rpy="0.0 0.0 0.0"/>
+    </joint>
+</xacro:macro>
+<!--########################################-->
+
+<!--               Caster xacro               -->
+<xacro:macro name="caster"
+    params="link_name:='caster_link' caster_props">
+    
+    <link name="${link_name}">
+    <xacro:if value="${caster_props['mesh'] == ''}">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <sphere radius="${caster_props['radius']}"/>
+            </geometry>
+
+            <material name="green"/>
+        </visual>
+
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <sphere radius="${caster_props['radius']}"/>
+            </geometry>
+        </collision>
+    </xacro:if>
+    </link>
+
+    <joint name="$caster_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="${link_name}"/>
+
+        <origin xyz="${caster_props['x_offset']} ${caster_props['y_offset']} ${caster_props['z_offset']}"
+                rpy="0.0 0.0 0.0"/>
+    </joint>    
+</xacro:macro>
+<!--##########################################-->
 </robot>
