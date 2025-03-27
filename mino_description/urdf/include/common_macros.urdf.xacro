@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<!--               Base xacro               -->
+
+<xacro:macro name="base"
+    params="link_name:='base_link' base_prop mesh:='' scale:=''">
+
+    <link name="footprint"/>
+
+    <joint name="footprint_to_base" type="fixed">
+        <parent link="footprint"/>
+        <child link="base_link"/>
+        <origin xyz="-0.1 0 0"/>
+    </joint>
+
+    <link name="${link_name}">
+
+    <!-- if no 3d model -->
+    <xacro:if value="${mesh == ''}">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+
+            <geometry>
+                <box size="${base_prop['x_size']} ${base_prop['y_size']} ${base_prop['z_size']}"/>
+            </geometry>
+        </visual>
+    </xacro:if>
+
+    <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <geometry>
+            <box size="${base_prop['x_size']} ${base_prop['y_size']} ${base_prop['z_size']}"/>
+        </geometry>
+    </collision>
+    </link>
+</xacro:macro>
+<!--########################################-->
+
+</robot>

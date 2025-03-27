@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mino">
+
+    <!--                 Properties                 -->
+    <xacro:property name="package_name" value="mino_description"/>
+    <xacro:property name="robot_name" value="mino"/>
+    <!-- ########################################## -->
+    
+    <!--            Include xacro files             -->
+    <xacro:include filename="$(find ${package_name})/urdf/include/common_macros.urdf.xacro"/>
+    <!-- ########################################## -->
+    
+
+
+    <!--                 Yaml configs               -->
+    <xacro:arg name="config_dir" default="$(find ${package_name})/config/${robot_name}"/>
+
+    <xacro:property name="base_yaml" value="$(arg config_dir)/base.yaml"/>
+    <xacro:property name="base_props" value="${xacro.load_yaml(base_yaml)}"/>
+    <!-- ########################################## -->
+
+
+    <!-- Base link -->
+    <xacro:base link_name="base_link" base_prop="${base_props}" mesh="${base_props['mesh']}"/>
+</robot>
+
