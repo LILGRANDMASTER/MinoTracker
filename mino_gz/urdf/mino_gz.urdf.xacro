@@ -2,6 +2,11 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mino">
     <xacro:include filename="$(find mino_description)/urdf/mino.urdf.xacro"/>
 
+    <gazebo reference="caster_link">
+        <mu1 value="0.001"/>
+        <mu2 value="0.001"/>
+    </gazebo>
+
     <ros2_control name="GazeboSimSystem" type="system">
         <hardware>
             <plugin>gz_ros2_control/GazeboSimSystem</plugin>
