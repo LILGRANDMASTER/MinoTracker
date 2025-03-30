@@ -7,6 +7,33 @@
         <mu2 value="0.001"/>
     </gazebo>
 
+    <gazebo reference="lidar_link">
+        <sensor name="lidar_sensor" type="gpu_lidar">
+            <gz_frame_id>lidar_link</gz_frame_id>
+
+            <lidar>
+                <scan>
+                    <horizontal>
+                        <samples>100</samples>
+                        <min_angle>-3.14</min_angle>
+                        <max_angle>3.14</max_angle>
+                    </horizontal>
+                </scan>
+
+                <range>
+                    <min>0.20</min>
+                    <max>12.0</max>
+                </range>
+            </lidar>
+
+            <topic>scan</topic>
+
+            <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+                <render_engine>ogre2</render_engine>
+            </plugin>
+        </sensor>
+    </gazebo>
+
     <ros2_control name="GazeboSimSystem" type="system">
         <hardware>
             <plugin>gz_ros2_control/GazeboSimSystem</plugin>

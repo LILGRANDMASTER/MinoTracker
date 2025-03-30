@@ -147,6 +147,46 @@
 </xacro:macro>
 <!--##########################################-->
 
+<!--               Lidar xacro                -->
+<xacro:macro name="lidar"
+    params="link_name:='lidar_link' lidar_props">
+
+    <link name="${link_name}">
+
+    <xacro:cylinder_inertia m="${lidar_props['mass']}"
+                            r="${lidar_props['radius']}"
+                            l="${lidar_props['length']}">
+    </xacro:cylinder_inertia>
+
+    <xacro:if value="${lidar_props['mesh'] == ''}">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="${lidar_props['radius']}" length="${lidar_props['length']}"/>
+            </geometry>
+
+            <material name="red"/>
+        </visual>
+
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="${lidar_props['radius']}" length="${lidar_props['length']}"/>
+            </geometry>
+        </collision>        
+    </xacro:if>
+    </link>
+
+    <joint name="lidar_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="${link_name}"/>
+        
+        <origin xyz="${lidar_props['x_offset']} ${lidar_props['y_offset']} ${lidar_props['z_offset']}"
+                rpy="0.0 0.0 0.0"/>
+    </joint>
+</xacro:macro>
+<!--##########################################-->
+
 
 <!--               Box inertia                -->
 <xacro:macro name="box_inertia" params="m x y z">
