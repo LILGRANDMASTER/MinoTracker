@@ -12,6 +12,10 @@ from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
+    mino_gz_pkg = get_package_share_directory('mino_gz')
+
+    my_world = os.path.join(mino_gz_pkg, 'worlds', 'world.sdf')
+
     # ros_gz_sim launch
     gz_sim_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -20,7 +24,7 @@ def generate_launch_description():
                                   'gz_sim.launch.py'])
         ),
 
-        launch_arguments=[('gz_args', [' -r -v 1 empty.sdf'])],
+        launch_arguments={'gz_args': f'-r -v4 {my_world}'}.items(),
     )
 
     # bridge
