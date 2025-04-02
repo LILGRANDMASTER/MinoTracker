@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!--               Wheel xacro               -->
+    <xacro:macro name="wheel"
+        params="prefix reflect wheel_props base_props">
+
+    <xacro:property name="pos_x_joint"
+        value="${(base_props['x_size']/2) - wheel_props['x_offset']}"/>
+
+    <xacro:property name="pos_y_joint"
+        value="${(base_props['y_size']/2) + wheel_props['y_offset'] + (wheel_props['length']/2)}"/>
+
+    <xacro:property name="pos_z_joint" value="${wheel_props['z_offset']}"/>
+
+        <link name="${prefix}_wheel">
+
+        <xacro:cylinder_inertia m="${wheel_props['mass']}"
+                                r="${wheel_props['radius']}"
+                                l="${wheel_props['length']}">
+        </xacro:cylinder_inertia>
+
+
+        <!-- if no 3d model -->
+        <xacro:if value="${wheel_props['mesh'] == ''}">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="${wheel_props['radius']}" length="${wheel_props['length']}"/>
+                </geometry>
+
+                <material name="black"/>
+            </visual>
+        </xacro:if>
+
+            <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="${wheel_props['radius']}" length="${wheel_props['length']}"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}_wheel_joint" type="continuous">
+            <axis xyz="0.0 1.0 0.0" rpy="0.0 0.0 0.0"/>
+            <parent link="base_link"/>
+            <child link="${prefix}_wheel"/>
+
+            <origin xyz="${pos_x_joint} ${reflect * pos_y_joint} ${pos_z_joint}" rpy="0.0 0.0 0.0"/>
+        </joint>
+    </xacro:macro>
+    <!--########################################-->
+
+</robot>

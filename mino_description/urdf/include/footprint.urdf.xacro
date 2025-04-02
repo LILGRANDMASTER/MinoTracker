@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!--            Footprint xacro              -->
+    <xacro:macro name="footprint"
+        params="wheel_props">
+
+        <link name="base_footprint"/>
+
+        <joint name="base_to_footprint_joint" type="fixed">
+            <parent link="base_link"/>
+            <child link="base_footprint"/>
+            <origin xyz="0.0 0.0 ${-(wheel_props['radius']) + wheel_props['z_offset']}" rpy="0.0 0.0 0.0"/>
+        </joint>
+    </xacro:macro>
+    <!--######################################## -->
+    
+</robot>

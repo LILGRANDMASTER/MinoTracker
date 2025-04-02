@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!--               Base xacro               -->
+    <xacro:macro name="base"
+        params="base_props mesh:=''">
+
+        <link name="base_link">
+
+        <xacro:box_inertia m="${base_props['mass']}"
+                        x="${base_props['x_size']}"
+                        y="${base_props['y_size']}"
+                        z="${base_props['z_size']}">
+        </xacro:box_inertia>
+
+        <!-- if no 3d model -->
+        <xacro:if value="${mesh == ''}">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="${base_props['x_size']} ${base_props['y_size']} ${base_props['z_size']}"/>
+                </geometry>
+
+                <material name="blue"/>
+            </visual>
+        </xacro:if>
+
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${base_props['x_size']} ${base_props['y_size']} ${base_props['z_size']}"/>
+            </geometry>
+        </collision>
+        </link>
+    </xacro:macro>
+    <!--########################################-->
+
+</robot>

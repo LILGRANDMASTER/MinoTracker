@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!--               Lidar xacro                -->
+    <xacro:macro name="lidar"
+        params="lidar_props">
+
+        <link name="lidar_link">
+
+        <xacro:cylinder_inertia m="${lidar_props['mass']}"
+                                r="${lidar_props['radius']}"
+                                l="${lidar_props['length']}">
+        </xacro:cylinder_inertia>
+
+        <xacro:if value="${lidar_props['mesh'] == ''}">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="${lidar_props['radius']}" length="${lidar_props['length']}"/>
+                </geometry>
+
+                <material name="red"/>
+            </visual>
+
+            <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="${lidar_props['radius']}" length="${lidar_props['length']}"/>
+                </geometry>
+            </collision>        
+        </xacro:if>
+        </link>
+
+        <joint name="lidar_joint" type="fixed">
+            <parent link="base_link"/>
+            <child link="lidar_link"/>
+            
+            <origin xyz="${lidar_props['x_offset']} ${lidar_props['y_offset']} ${lidar_props['z_offset']}"
+                    rpy="0.0 0.0 0.0"/>
+        </joint>
+    </xacro:macro>
+    <!--##########################################-->
+
+</robot>

@@ -9,7 +9,13 @@
     <!-- ########################################## -->
     
     <!--            Include xacro files             -->
-    <xacro:include filename="$(find ${package_name})/urdf/include/common_macros.urdf.xacro"/>
+    <xacro:include filename="$(find ${package_name})/urdf/include/inertia.urdf.xacro"/>
+    <xacro:include filename="$(find ${package_name})/urdf/include/materials.urdf.xacro"/>
+    <xacro:include filename="$(find ${package_name})/urdf/include/base.urdf.xacro"/>
+    <xacro:include filename="$(find ${package_name})/urdf/include/footprint.urdf.xacro"/>
+    <xacro:include filename="$(find ${package_name})/urdf/include/caster.urdf.xacro"/>
+    <xacro:include filename="$(find ${package_name})/urdf/include/wheel.urdf.xacro"/>
+    <xacro:include filename="$(find ${package_name})/urdf/include/lidar.urdf.xacro"/>
     <!-- ########################################## -->
     
 
@@ -34,17 +40,17 @@
     <xacro:footprint wheel_props="${wheel_props}"/>
 
     <!-- Base link -->
-    <xacro:base link_name="base_link" base_prop="${base_props}" mesh="${base_props['mesh']}"/>
+    <xacro:base base_props="${base_props}" mesh="${base_props['mesh']}"/>
 
     <!-- Wheels links -->
     <xacro:wheel prefix="right" reflect="-1" wheel_props="${wheel_props}" base_props="${base_props}"/>
     <xacro:wheel prefix="left" reflect="1" wheel_props="${wheel_props}" base_props="${base_props}"/>
 
     <!-- Caster wheel link -->
-    <xacro:caster link_name="caster_link" caster_props="${caster_props}"/>
+    <xacro:caster caster_props="${caster_props}"/>
     
     <!-- Sensor link -->
-    <xacro:lidar link_name="lidar_link" lidar_props="${lidar_props}"/>
+    <xacro:lidar lidar_props="${lidar_props}"/>
 
 </robot>
 
