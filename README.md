@@ -48,7 +48,7 @@ cd ~/mino_ws/src
 
 2. Клонируем репозиторий:
 ```bash
-git clone https://github.com/your_username/mino_robot_sim.git
+git clone https://github.com/LILGRANDMASTER/MinoTracker.git
 ```
 
 3. Устанавливаем зависимости:
@@ -112,7 +112,7 @@ graph TD
 
 Основные параметры можно менять через файлы конфигурации:
 
-1. Параметры робота: `mino_description/config/Mino/*`
+1. Параметры робота: `mino_description/config/mino/*`
 2. Настройки SLAM: `mino_slam/config/*`
 3. Параметры RViz: `package_name/rviz/*`
 
