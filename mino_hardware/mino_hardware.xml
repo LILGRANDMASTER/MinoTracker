@@ -1,0 +1,8 @@
+<library path="mino_hardware">
+
+    <class name="mino_hardware/MinoHardware" type="mino_hardware::MinoHardware" base_class_type="hardware_interface::SystemInterface">
+        <description>
+            Hardware class for mino robot
+        </description>
+    </class>
+</library>
