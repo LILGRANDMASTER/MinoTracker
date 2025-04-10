@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  ros:
+    image: mino_ros_image
+    build: .
+    container_name: mino_ros_container
+    restart: unless-stopped
+
+    network_mode: host
+    ipc: host
+
+    devices:
+    #  - "/dev/gpiomem:/dev/gpiomem"
+    #  - "/dev/i2c-1:/dev/i2c-1"
+
+    tty: true
+
+    environment:
+      - DISPLAY
