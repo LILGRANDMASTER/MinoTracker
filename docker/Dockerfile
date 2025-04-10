@@ -20,7 +20,10 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install WiringPi
-RUN sudo apt-get update && apt-get install -y wiringpi
+RUN git clone https://github.com/WiringPi/WiringPi.git
+RUN cd WiringPi/wiringPi
+RUN make all
+RUN make install
 
 WORKDIR /ros_ws/src
 
