@@ -36,6 +36,12 @@ namespace mino_hardware
       }
     }
 
+    uint8_t laddr = std::stoi(config_.left_motor_i2c_addr, nullptr, 16);
+    uint8_t raddr = std::stoi(config_.right_motor_i2c_addr, nullptr, 16);
+
+    motor_left.setup(config_.left_wheel_name, laddr);
+    motor_right.setup(config_.right_wheel_name, raddr);
+
     RCLCPP_INFO(logger_, "Initialization finished");
 
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -45,15 +51,9 @@ namespace mino_hardware
   {
     RCLCPP_INFO(logger_, "Hardware configuration...");
 
-    uint8_t laddr = std::stoi(config_.left_motor_i2c_addr, nullptr, 16);
-    uint8_t raddr = std::stoi(config_.right_motor_i2c_addr, nullptr, 16);
-
-    motor_left.setup(config_.left_wheel_name, laddr);
-    motor_right.setup(config_.right_wheel_name, raddr);
-
     RCLCPP_INFO(logger_, "Configuration finished.");
 
-    return hardware_interface::CallbackReturn::ERROR;
+    return hardware_interface::CallbackReturn::SUCCESS;
   }
 
   std::vector<hardware_interface::StateInterface> MinoHardware::export_state_interfaces()
