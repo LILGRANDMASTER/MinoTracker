@@ -14,7 +14,7 @@ find_package(rclcpp REQUIRED)
 
 
 # Добавляем библиотеку
-add_library(${PROJECT_NAME}
+add_library(${PROJECT_NAME} SHARED
   src/mino_hardware.cpp
   src/mino_motors.cpp
 )
