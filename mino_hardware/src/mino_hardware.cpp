@@ -141,8 +141,11 @@ namespace mino_hardware
     RCLCPP_DEBUG(logger_, "Left motor speed: %f", motor_left.wheel_.cmd_);
     RCLCPP_DEBUG(logger_, "Right motor speed: %f", motor_right.wheel_.cmd_);
 
-    uint16_t rpm1 = static_cast<uint16_t>(motor_left.wheel_.cmd_);
-    uint16_t rpm2 = static_cast<uint16_t>(motor_left.wheel_.cmd_);
+    double rpm1 = motor_left.wheel_.cmd_;
+    double rpm2 = motor_right.wheel_.cmd_;
+
+    motor_left.set_speed(rpm1);
+    motor_right.set_speed(rpm2);
 
     RCLCPP_DEBUG(logger_, "Setup finished");
     
