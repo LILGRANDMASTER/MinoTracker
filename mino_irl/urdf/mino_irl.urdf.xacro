@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mino">
+
+    <!--            Include xacro files             -->
+    <xacro:include filename="$(find mino_description)/urdf/mino.urdf.xacro"/>
+    <!-- ########################################## -->
+
+    <!--                 Yaml configs               -->
+
+    <xacro:property name="hardware_yaml" value="$(find mino_irl)/config/mino/mino_irl_hardware.yaml"/>
+    <xacro:property name="hardware_props" value="${xacro.load_yaml(hardware_yaml)}"/>
+    <!-- ########################################## -->
+
+    <ros2_control name="RealRobot" type="system">
+        <hardware>
+            <plugin>mino_hardware/MinoHardware</plugin>
+            <param name="left_wheel_name">${hardware_props['left_wheel_name']}</param>
+            <param name="right_wheel_name">${hardware_props['right_wheel_name']}</param>
+            <param name="left_motor_i2c_addr">${hardware_props['left_motor_i2c_addr']}</param>
+            <param name="right_motor_i2c_addr">${hardware_props['right_motor_i2c_addr']}</param>
+        </hardware>
+
+        <joint name="left_wheel_joint">
+            <command_interface name="velocity">
+                <param name="min">-100</param>
+                <param name="max">100</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+
+        <joint name="right_wheel_joint">
+            <command_interface name="velocity">
+                <param name="min">-100</param>
+                <param name="max">100</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+    </ros2_control>
+
+</robot>
