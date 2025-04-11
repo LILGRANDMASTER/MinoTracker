@@ -67,7 +67,7 @@ namespace mino_hardware
 
     wiringPiI2CReadBlockData(fd_, reg, &data, 1);
 
-    data = (dir ? BIT_DIR_CKW : 0) | data & (~BIT_DIR_CKW);
+    data = (dir ? BIT_DIR_CKW : 0) | (data & (~BIT_DIR_CKW));
     
     wiringPiI2CWriteBlockData(fd_, reg, &data, 1);
   }
