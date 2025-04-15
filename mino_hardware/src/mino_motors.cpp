@@ -27,12 +27,19 @@ namespace mino_hardware
 
   void MinoMotor::set_speed(double rpm)
   {
+    double eps = 1e-2;
     uint8_t reg = static_cast<uint8_t>(REG_MOT_SET_RPM_L);
     uint8_t data[2] = {0};
 
-    data[0] = static_cast<uint8_t>(static_cast<int16_t>(rpm) & 0xFF);
-    data[1] = static_cast<uint8_t>((static_cast<int16_t>(rpm) >> 8) & 0xFF);
-
+    /* 
+    *  Эта проверка сделана для того, чтобы исключить маленькие значения об/мин,
+    *  которые приводят к ухудшению работы двигателя
+    */
+    if ( (rpm < (-eps)) || (rpm > (eps)) ) {
+      data[0] = static_cast<uint8_t>(static_cast<int16_t>(rpm) & 0xFF);
+      data[1] = static_cast<uint8_t>((static_cast<int16_t>(rpm) >> 8) & 0xFF);
+    }
+    
     wiringPiI2CWriteBlockData(fd_, reg, data, 2);
   }
 
