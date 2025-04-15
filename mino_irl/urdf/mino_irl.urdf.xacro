@@ -18,6 +18,8 @@
             <param name="right_wheel_name">${hardware_props['right_wheel_name']}</param>
             <param name="left_motor_i2c_addr">${hardware_props['left_motor_i2c_addr']}</param>
             <param name="right_motor_i2c_addr">${hardware_props['right_motor_i2c_addr']}</param>
+            <param name="left_rpt">${hardware_props['left_rpt']}</param>
+            <param name="right_rpt">${hardware_props['right_rpt']}</param>
         </hardware>
 
         <joint name="left_wheel_joint">

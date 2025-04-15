@@ -32,7 +32,9 @@ namespace mino_hardware
     const std::string lw_name_param{"left_wheel_name"};
     const std::string rw_name_param{"right_wheel_name"};
     const std::string laddr_param{"left_motor_i2c_addr"};
-    const std::string raddr_param {"right_motor_i2c_addr"};
+    const std::string raddr_param{"right_motor_i2c_addr"};
+    const std::string lrpt_param{"left_rpt"};
+    const std::string rrpt_param{"right_rpt"};
 
 
     struct Config {
