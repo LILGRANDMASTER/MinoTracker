@@ -42,6 +42,10 @@ namespace mino_hardware
     motor_left.setup(config_.left_wheel_name, laddr);
     motor_right.setup(config_.right_wheel_name, raddr);
 
+    /* TODO : info_.hardware_parameters[lrpt_param] */
+    motor_left.wheel_.rpt_ = 0.0628;
+    motor_right.wheel_.rpt_ = 0.0628;
+
     RCLCPP_INFO(logger_, "Initialization finished");
 
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -50,7 +54,6 @@ namespace mino_hardware
   hardware_interface::CallbackReturn MinoHardware::on_configure(const rclcpp_lifecycle::State  & previous_state)
   {
     RCLCPP_INFO(logger_, "Hardware configuration...");
-
     RCLCPP_INFO(logger_, "Configuration finished.");
 
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -106,9 +109,6 @@ namespace mino_hardware
     uint32_t enc1 = motor_left.get_encoder_ticks();
     uint32_t enc2 = motor_right.get_encoder_ticks();
 
-    bool dir1 = motor_left.get_direction();
-    bool dir2 = motor_right.get_direction();
-
     double rpt1 = motor_left.wheel_.rpt_;
     double rpt2 = motor_right.wheel_.rpt_;
 
@@ -117,12 +117,12 @@ namespace mino_hardware
 
 
 
-    if (dir1)
+    if (motor_left.wheel_.cmd_ > 0)
       motor_left.wheel_.pos_ += (enc1 - motor_left.wheel_.enc_) * rpt1;
     else
       motor_left.wheel_.pos_ -= (enc1 - motor_left.wheel_.enc_) * rpt1;
 
-    if (dir2)
+    if (motor_right.wheel_.cmd_ > 0)
       motor_right.wheel_.pos_ += (enc2 - motor_right.wheel_.enc_) * rpt2;
     else
       motor_right.wheel_.pos_ -= (enc2 - motor_right.wheel_.enc_) * rpt2;

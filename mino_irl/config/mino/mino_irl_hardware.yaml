@@ -1,4 +1,8 @@
-left_wheel_name: left_wheel_joint
-right_wheel_name: right_wheel_joint
-left_motor_i2c_addr: 0x0C
-right_motor_i2c_addr: 0x0A
+left_wheel_name: "left_wheel_joint"
+right_wheel_name: "right_wheel_joint"
+
+left_motor_i2c_addr: "0x0C"
+right_motor_i2c_addr: "0x0A"
+
+left_rpt: 0.0628
+right_rpt: 0.0628
