@@ -13,7 +13,7 @@ namespace mino_hardware
     ~MinoMotor() = default;
 
     /* Functions for initialization and reset */
-    void setup(const std::string & name, uint8_t i2c_addr);
+    void setup(const std::string & name, uint8_t i2c_addr, double rpt);
     void reset(void);
 
     

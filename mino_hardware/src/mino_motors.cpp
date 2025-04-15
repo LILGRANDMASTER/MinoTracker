@@ -5,11 +5,12 @@
 
 namespace mino_hardware
 {
-  void MinoMotor::setup(const std::string & name, uint8_t i2c_addr)
+  void MinoMotor::setup(const std::string & name, uint8_t i2c_addr, double rpt)
   {
     wheel_.name_ = name;
     wheel_.cmd_ = 0.0;
     wheel_.vel_ = 0.0;
+    wheel_.rpt_ = rpt;
 
     fd_ = wiringPiI2CSetup(i2c_addr);
   }

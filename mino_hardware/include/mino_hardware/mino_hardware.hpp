@@ -29,20 +29,28 @@ namespace mino_hardware
 
     private:
     
-    const std::string lw_name_param{"left_wheel_name"};
-    const std::string rw_name_param{"right_wheel_name"};
-    const std::string laddr_param{"left_motor_i2c_addr"};
-    const std::string raddr_param{"right_motor_i2c_addr"};
-    const std::string lrpt_param{"left_rpt"};
-    const std::string rrpt_param{"right_rpt"};
+    /* Joints names parameters*/
+    const std::string lw_name_param   {"left_wheel_name"};
+    const std::string rw_name_param   {"right_wheel_name"};
+
+    /* Motor module i2c address parameters*/
+    const std::string laddr_param     {"left_motor_i2c_addr"};
+    const std::string raddr_param     {"right_motor_i2c_addr"};
+
+    /* Radians per tick parameters*/
+    const std::string lrpt_param      {"left_rpt"};
+    const std::string rrpt_param      {"right_rpt"};
 
 
     struct Config {
-      std::string left_wheel_name = "left_wheel";
-      std::string right_wheel_name = "right_wheel";
+      std::string left_wheel_name       = "left_wheel_joint";
+      std::string right_wheel_name      = "right_wheel_joint";
 
-      std::string left_motor_i2c_addr = "0x0C";
-      std::string right_motor_i2c_addr = "0x0A";
+      std::string left_motor_i2c_addr   = "0x0C";
+      std::string right_motor_i2c_addr  = "0x0A";
+
+      double left_rpt                   = 0.0628;
+      double right_rpt                  = 0.0628;
     };
 
     

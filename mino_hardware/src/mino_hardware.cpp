@@ -12,16 +12,19 @@ namespace mino_hardware
 
     RCLCPP_INFO(logger_, "Hardware initialization...");
 
-    config_.left_wheel_name = info_.hardware_parameters[lw_name_param];
-    config_.right_wheel_name = info_.hardware_parameters[rw_name_param];
-    config_.left_motor_i2c_addr = info_.hardware_parameters[laddr_param];
-    config_.right_motor_i2c_addr = info_.hardware_parameters[raddr_param];
+    /* Initialize configuration parameters from urdf file */
+    config_.left_wheel_name       = info_.hardware_parameters[lw_name_param];
+    config_.right_wheel_name      = info_.hardware_parameters[rw_name_param];
+    config_.left_motor_i2c_addr   = info_.hardware_parameters[laddr_param];
+    config_.right_motor_i2c_addr  = info_.hardware_parameters[raddr_param];
+    config_.left_rpt              = std::stod(info_.hardware_parameters[lrpt_param]);
+    config_.right_rpt             = std::stod(info_.hardware_parameters[rrpt_param]);
 
-    RCLCPP_DEBUG(logger_, (lw_name_param + static_cast<std::string>(": ") + config_.left_wheel_name).c_str());
-    RCLCPP_DEBUG(logger_, (rw_name_param + static_cast<std::string>(": ") + config_.right_wheel_name).c_str());
-    RCLCPP_DEBUG(logger_, (laddr_param + static_cast<std::string>(": ") + config_.left_motor_i2c_addr).c_str());
-    RCLCPP_DEBUG(logger_, (raddr_param + static_cast<std::string>(": ") + config_.right_motor_i2c_addr).c_str());
-
+    RCLCPP_DEBUG(logger_, (lw_name_param  + static_cast<std::string>(": ") + config_.left_wheel_name).c_str());
+    RCLCPP_DEBUG(logger_, (rw_name_param  + static_cast<std::string>(": ") + config_.right_wheel_name).c_str());
+    RCLCPP_DEBUG(logger_, (laddr_param    + static_cast<std::string>(": ") + config_.left_motor_i2c_addr).c_str());
+    RCLCPP_DEBUG(logger_, (raddr_param    + static_cast<std::string>(": ") + config_.right_motor_i2c_addr).c_str());
+    
     for (const hardware_interface::ComponentInfo & joint : info.joints) {
       if (joint.command_interfaces.size() != 1) {
         RCLCPP_FATAL(logger_, "Joint '%s' has %zu command interfaces found. 1 expected.", joint.name.c_str(), joint.command_interfaces.size());
@@ -39,12 +42,11 @@ namespace mino_hardware
     uint8_t laddr = std::stoi(config_.left_motor_i2c_addr, nullptr, 16);
     uint8_t raddr = std::stoi(config_.right_motor_i2c_addr, nullptr, 16);
 
-    motor_left.setup(config_.left_wheel_name, laddr);
-    motor_right.setup(config_.right_wheel_name, raddr);
+    double rpt1   = config_.left_rpt;
+    double rpt2   = config_.right_rpt;
 
-    /* TODO : info_.hardware_parameters[lrpt_param] */
-    motor_left.wheel_.rpt_ = 0.0628;
-    motor_right.wheel_.rpt_ = 0.0628;
+    motor_left.setup(config_.left_wheel_name, laddr, rpt1);
+    motor_right.setup(config_.right_wheel_name, raddr, rpt2);
 
     RCLCPP_INFO(logger_, "Initialization finished");
 
