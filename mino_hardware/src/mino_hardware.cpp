@@ -143,7 +143,7 @@ namespace mino_hardware
     RCLCPP_DEBUG(logger_, "Left motor speed: %f", motor_left.wheel_.cmd_);
     RCLCPP_DEBUG(logger_, "Right motor speed: %f", motor_right.wheel_.cmd_);
 
-    double rpm1 = motor_left.wheel_.cmd_;
+    double rpm1 = (-1) * motor_left.wheel_.cmd_; // must be invert, check motor docks
     double rpm2 = motor_right.wheel_.cmd_;
 
     motor_left.set_speed(rpm1);
