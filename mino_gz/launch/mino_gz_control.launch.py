@@ -23,15 +23,25 @@ def generate_launch_description():
     diff_drive_base_controller_spawner = Node(
         package='controller_manager',
         executable='spawner',
+
         arguments=[
             'diff_drive_base_controller',
             '--param-file',
             mino_controller_yaml,
-        ]
+        ],
     )
 
 
+    odom_relay = Node(
+        package='topic_tools',
+        executable='relay',
+        arguments=['/diff_drive_base_controller/odom', '/odom'],
+
+        output='screen'
+    )
+
     return LaunchDescription([
+        odom_relay,
         joint_state_broadcaster_spawner,
         diff_drive_base_controller_spawner,
     ])
