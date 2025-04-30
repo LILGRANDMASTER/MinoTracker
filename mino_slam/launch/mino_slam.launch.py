@@ -11,8 +11,8 @@ from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
-    mino_mapper_pkg = get_package_share_directory('mino_mapper')
-    mapper_parameters = os.path.join(mino_mapper_pkg, 'config', 'mapper_params_online_async.yaml')
+    mino_slam_pkg = get_package_share_directory('mino_slam')
+    slam_parameters = os.path.join(mino_slam_pkg, 'config', 'mapper_params_online_async.yaml')
 
 
     use_sim_time_arg = DeclareLaunchArgument(
@@ -21,7 +21,7 @@ def generate_launch_description():
         description='Use simulation (Gazebo) clock if true',
     )
 
-    mapper = IncludeLaunchDescription(
+    slam = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution([FindPackageShare('slam_toolbox'),
                                   'launch',
@@ -30,12 +30,11 @@ def generate_launch_description():
 
         launch_arguments={
             'slam_params_file': slam_parameters,
-            'slam_params_file': mapper_parameters,
             'use_sim_time': LaunchConfiguration('use_sim_time'),
         }.items(),
     )
 
     return LaunchDescription([
         use_sim_time_arg,
-        mapper,
+        slam,
     ])
