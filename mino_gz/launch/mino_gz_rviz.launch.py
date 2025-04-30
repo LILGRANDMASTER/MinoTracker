@@ -14,7 +14,8 @@ def generate_launch_description():
     rviz = Node(
         package='rviz2',
         executable='rviz2',
-        arguments=['-d', os.path.join(mino_gz_pkg, 'rviz', 'rviz_config.rviz')]
+        arguments=['-d', os.path.join(mino_gz_pkg, 'rviz', 'rviz_config.rviz')],
+        parameters=[{'use_sim_time': True}],
     )
 
     return LaunchDescription([
