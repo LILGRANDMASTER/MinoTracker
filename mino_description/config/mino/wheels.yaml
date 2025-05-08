@@ -1,11 +1,11 @@
-mass: 0.032
+mass: 0.080
 
-radius: 0.0331
-length: 0.025
+radius: 0.02
+length: 0.01
 
 mesh: ''
 scale: ''
 
-x_offset: 0.079
-y_offset: 0.015
-z_offset: -0.017
+x_offset: 0.045
+y_offset: 0.01
+z_offset: -0.005

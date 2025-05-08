@@ -1,8 +1,8 @@
-mass: 0.5
-radius : 0.023
+mass: 0.4
+radius : 0.015
 
 mesh: ''
 
-x_offset: -0.05
+x_offset: -0.045
 y_offset: 0.0
-z_offset: -0.027
+z_offset: -0.01

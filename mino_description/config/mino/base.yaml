@@ -1,7 +1,7 @@
-mass: 0.8
+mass: 0.1
 
-x_size: 0.195
-y_size: 0.08
-z_size: 0.005
+x_size: 0.16
+y_size: 0.12
+z_size: 0.004
 
 mesh: ''
