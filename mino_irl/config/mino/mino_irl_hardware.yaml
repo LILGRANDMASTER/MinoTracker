@@ -4,7 +4,7 @@ right_wheel_name: "right_wheel_joint"
 
 # I2C address of motor module
 left_motor_i2c_addr: "0x0C"
-right_motor_i2c_addr: "0x0A"
+right_motor_i2c_addr: "0x0B"
 
 # Radians per tick (encoder)
 left_rpt: 0.0628

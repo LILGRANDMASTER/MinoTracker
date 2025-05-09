@@ -19,7 +19,8 @@ namespace mino_hardware
     
     void set_speed(double rpm);
     void set_direction(bool dir);
-
+    void hard_stop();
+    
     double get_speed(void);
     uint32_t get_encoder_ticks(void);
     bool get_direction(void);

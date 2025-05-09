@@ -31,26 +31,32 @@ namespace mino_hardware
     uint8_t reg = static_cast<uint8_t>(REG_MOT_SET_RPM_L);
     uint8_t data[2] = {0};
 
-    /* 
-    *  Эта проверка сделана для того, чтобы исключить маленькие значения об/мин,
-    *  которые приводят к ухудшению работы двигателя
-    */
-    if ( (rpm < (-eps)) || (rpm > (eps)) ) {
-      data[0] = static_cast<uint8_t>(static_cast<int16_t>(rpm) & 0xFF);
-      data[1] = static_cast<uint8_t>((static_cast<int16_t>(rpm) >> 8) & 0xFF);
-    }
+ 
+    data[0] = static_cast<uint8_t>(static_cast<int16_t>(rpm) & 0xFF);
+    data[1] = static_cast<uint8_t>((static_cast<int16_t>(rpm) >> 8) & 0xFF);
+    
     
     wiringPiI2CWriteBlockData(fd_, reg, data, 2);
+  }
+
+  void MinoMotor::hard_stop()
+  {
+    uint8_t reg = static_cast<uint8_t>(REG_MOT_STOP);
+    uint8_t data = static_cast<uint8_t>(BIT_STOP);
+
+    wiringPiI2CWriteBlockData(fd_, reg, &data, 1);
   }
 
   double MinoMotor::get_speed(void)
   {
     uint8_t reg = static_cast<uint8_t>(REG_MOT_GET_RPM_L);
     uint8_t data[2] = {0};
+    int16_t raw_vel = 0;
     double vel = 0.0;
 
     wiringPiI2CReadBlockData(fd_, reg, data, 2);
-    vel = static_cast<double>((static_cast<int16_t>(data[1]) << 8) | static_cast<int16_t>(data[0]));
+    raw_vel = (static_cast<int16_t>(data[1]) << 8) | data[0];
+    vel = static_cast<double>(raw_vel);
 
     if (vel > max_speed)
       return (65536.0 - vel);

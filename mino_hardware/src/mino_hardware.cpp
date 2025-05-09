@@ -146,8 +146,18 @@ namespace mino_hardware
     double rpm1 = (-1) * motor_left.wheel_.cmd_; // must be invert, check motor docks
     double rpm2 = motor_right.wheel_.cmd_;
 
-    motor_left.set_speed(rpm1);
-    motor_right.set_speed(rpm2);
+    if ((rpm1 < 0.5) && (rpm1 > -0.5)) {
+      motor_left.hard_stop();
+    } else {
+      motor_left.set_speed(rpm1);
+    }
+
+    if ((rpm2 < 0.5) && (rpm2 > -0.5)) {
+      motor_right.hard_stop();
+    } else {
+      motor_right.set_speed(rpm2);
+    }
+
 
     RCLCPP_DEBUG(logger_, "Setup finished");
     
