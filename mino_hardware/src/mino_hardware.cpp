@@ -66,13 +66,13 @@ namespace mino_hardware
     std::vector<hardware_interface::StateInterface> state_interfaces;
 
     state_interfaces.emplace_back(
-      hardware_interface::StateInterface(motor_left.wheel_.name_, hardware_interface::HW_IF_VELOCITY, &motor_left.wheel_.vel_));
+      hardware_interface::StateInterface(motor_left.get_wheel_data().name_, hardware_interface::HW_IF_VELOCITY, &motor_left.get_wheel_data().vel_));
     state_interfaces.emplace_back(
-      hardware_interface::StateInterface(motor_left.wheel_.name_, hardware_interface::HW_IF_POSITION, &motor_left.wheel_.pos_));
+      hardware_interface::StateInterface(motor_left.get_wheel_data().name_, hardware_interface::HW_IF_POSITION, &motor_left.get_wheel_data().pos_));
     state_interfaces.emplace_back(
-      hardware_interface::StateInterface(motor_right.wheel_.name_, hardware_interface::HW_IF_VELOCITY, &motor_right.wheel_.vel_));
+      hardware_interface::StateInterface(motor_right.get_wheel_data().name_, hardware_interface::HW_IF_VELOCITY, &motor_right.get_wheel_data().vel_));
     state_interfaces.emplace_back(
-      hardware_interface::StateInterface(motor_right.wheel_.name_, hardware_interface::HW_IF_POSITION, &motor_right.wheel_.pos_));
+      hardware_interface::StateInterface(motor_right.get_wheel_data().name_, hardware_interface::HW_IF_POSITION, &motor_right.get_wheel_data().pos_));
 
     return state_interfaces;
   }
@@ -82,9 +82,9 @@ namespace mino_hardware
     std::vector<hardware_interface::CommandInterface> command_interfaces;
 
     command_interfaces.emplace_back(
-      hardware_interface::CommandInterface(motor_left.wheel_.name_, hardware_interface::HW_IF_VELOCITY, &motor_left.wheel_.cmd_));
+      hardware_interface::CommandInterface(motor_left.get_wheel_data().name_, hardware_interface::HW_IF_VELOCITY, &motor_left.get_wheel_data().cmd_));
     command_interfaces.emplace_back(
-      hardware_interface::CommandInterface(motor_right.wheel_.name_, hardware_interface::HW_IF_VELOCITY, &motor_right.wheel_.cmd_));
+      hardware_interface::CommandInterface(motor_right.get_wheel_data().name_, hardware_interface::HW_IF_VELOCITY, &motor_right.get_wheel_data().cmd_));
 
     return command_interfaces;
   }
@@ -111,27 +111,27 @@ namespace mino_hardware
     uint32_t enc1 = motor_left.get_encoder_ticks();
     uint32_t enc2 = motor_right.get_encoder_ticks();
 
-    double rpt1 = motor_left.wheel_.rpt_;
-    double rpt2 = motor_right.wheel_.rpt_;
+    double rpt1 = motor_left.get_wheel_data().rpt_;
+    double rpt2 = motor_right.get_wheel_data().rpt_;
 
-    motor_left.wheel_.vel_ = motor_left.get_speed();
-    motor_right.wheel_.vel_ = motor_right.get_speed();
+    motor_left.get_wheel_data().vel_ = motor_left.get_speed();
+    motor_right.get_wheel_data().vel_ = motor_right.get_speed();
 
 
 
-    if (motor_left.wheel_.cmd_ > 0)
-      motor_left.wheel_.pos_ += (enc1 - motor_left.wheel_.enc_) * rpt1;
+    if (motor_left.get_wheel_data().cmd_ > 0)
+      motor_left.get_wheel_data().pos_ += (enc1 - motor_left.get_wheel_data().enc_) * rpt1;
     else
-      motor_left.wheel_.pos_ -= (enc1 - motor_left.wheel_.enc_) * rpt1;
+      motor_left.get_wheel_data().pos_ -= (enc1 - motor_left.get_wheel_data().enc_) * rpt1;
 
-    if (motor_right.wheel_.cmd_ > 0)
-      motor_right.wheel_.pos_ += (enc2 - motor_right.wheel_.enc_) * rpt2;
+    if (motor_right.get_wheel_data().cmd_ > 0)
+      motor_right.get_wheel_data().pos_ += (enc2 - motor_right.get_wheel_data().enc_) * rpt2;
     else
-      motor_right.wheel_.pos_ -= (enc2 - motor_right.wheel_.enc_) * rpt2;
+      motor_right.get_wheel_data().pos_ -= (enc2 - motor_right.get_wheel_data().enc_) * rpt2;
 
 
-    motor_left.wheel_.enc_ = enc1;
-    motor_right.wheel_.enc_ = enc2;
+    motor_left.get_wheel_data().enc_ = enc1;
+    motor_right.get_wheel_data().enc_ = enc2;
 
     return hardware_interface::return_type::OK;
   }
@@ -140,23 +140,15 @@ namespace mino_hardware
   hardware_interface::return_type MinoHardware::write(const rclcpp::Time & time, const rclcpp::Duration & period)
   {
     RCLCPP_DEBUG(logger_, "Setting up motors speed");
-    RCLCPP_DEBUG(logger_, "Left motor speed: %f", motor_left.wheel_.cmd_);
-    RCLCPP_DEBUG(logger_, "Right motor speed: %f", motor_right.wheel_.cmd_);
+    RCLCPP_DEBUG(logger_, "Left motor speed: %f", motor_left.get_wheel_data().cmd_);
+    RCLCPP_DEBUG(logger_, "Right motor speed: %f", motor_right.get_wheel_data().cmd_);
 
-    double rpm1 = (-1) * motor_left.wheel_.cmd_; // must be invert, check motor docks
-    double rpm2 = motor_right.wheel_.cmd_;
+    double rpm1 = (-1) * motor_left.get_wheel_data().cmd_; // must be invert, check motor docks
+    double rpm2 = motor_right.get_wheel_data().cmd_;
 
-    if ((rpm1 < 0.5) && (rpm1 > -0.5)) {
-      motor_left.hard_stop();
-    } else {
-      motor_left.set_speed(rpm1);
-    }
-
-    if ((rpm2 < 0.5) && (rpm2 > -0.5)) {
-      motor_right.hard_stop();
-    } else {
-      motor_right.set_speed(rpm2);
-    }
+    motor_left.set_speed(rpm1);
+    motor_right.set_speed(rpm2);
+    
 
 
     RCLCPP_DEBUG(logger_, "Setup finished");
